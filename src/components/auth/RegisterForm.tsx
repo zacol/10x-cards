@@ -36,22 +36,20 @@ export function RegisterForm() {
     setIsLoading(true);
 
     try {
-      // TODO: Backend implementation - wywołanie POST /api/auth/register
-      // const response = await fetch('/api/auth/register', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password }),
-      //   credentials: 'same-origin',
-      // });
-      //
-      // if (!response.ok) {
-      //   const data = await response.json();
-      //   throw new Error(data.error?.message || 'Registration failed');
-      // }
-      //
-      // window.location.href = '/library';
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+        credentials: "same-origin",
+      });
 
-      console.log("Registration attempt:", { email });
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error?.message || "Registration failed");
+      }
+
+      // Redirect to library after successful registration
+      window.location.href = "/library";
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred during registration");
     } finally {

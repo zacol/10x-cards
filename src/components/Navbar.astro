@@ -1,0 +1,53 @@
+---
+import { LogoutButton } from "@/components/auth/LogoutButton";
+
+interface Props {
+  userEmail: string;
+}
+
+const { userEmail } = Astro.props;
+---
+
+<nav class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo and Navigation Links -->
+      <div class="flex items-center space-x-8">
+        <!-- Logo -->
+        <a href="/library" class="flex items-center">
+          <span class="text-xl font-bold text-gray-900 dark:text-white">10xCards</span>
+        </a>
+
+        <!-- Navigation Links -->
+        <div class="hidden md:flex space-x-4">
+          <a
+            href="/library"
+            class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+          >
+            Library
+          </a>
+          <a
+            href="/generate"
+            class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+          >
+            Generator
+          </a>
+          <a
+            href="/study"
+            class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+          >
+            Study
+          </a>
+        </div>
+      </div>
+
+      <!-- User Info and Logout -->
+      <div class="flex items-center space-x-4">
+        <span class="text-sm text-gray-700 dark:text-gray-300 hidden sm:block">
+          {userEmail}
+        </span>
+        <LogoutButton client:load />
+      </div>
+    </div>
+  </div>
+</nav>

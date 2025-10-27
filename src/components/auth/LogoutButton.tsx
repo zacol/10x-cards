@@ -8,24 +8,23 @@ export function LogoutButton() {
     setIsLoading(true);
 
     try {
-      // TODO: Backend implementation - wywołanie POST /api/auth/logout
-      // const response = await fetch('/api/auth/logout', {
-      //   method: 'POST',
-      //   credentials: 'same-origin',
-      // });
-      //
-      // if (!response.ok) {
-      //   throw new Error('Logout failed');
-      // }
-      //
-      // window.location.href = '/auth/login';
+      const response = await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "same-origin",
+      });
 
-      console.log("Logout attempt");
+      if (!response.ok) {
+        throw new Error("Logout failed");
+      }
+
+      // Redirect to login page after successful logout
+      window.location.href = "/auth/login";
     } catch (err) {
       console.error("Logout error:", err);
-    } finally {
-      setIsLoading(false);
+      // Even if there's an error, redirect to login as a fallback
+      window.location.href = "/auth/login";
     }
+    // Note: No finally block needed since we're redirecting
   };
 
   return (

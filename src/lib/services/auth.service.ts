@@ -36,7 +36,7 @@ function mapSupabaseAuthError(error: { message: string; status?: number }): Auth
   if (message.includes("user already registered") || message.includes("already exists")) {
     return {
       code: "CONFLICT",
-      message: "An account with this email address already exists",
+      message: "An account with this email already exists. Try logging in instead.",
     };
   }
 
