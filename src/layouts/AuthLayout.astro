@@ -1,0 +1,48 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  alternativeLink?: {
+    text: string;
+    href: string;
+    label: string;
+  };
+}
+
+const { title, alternativeLink } = Astro.props;
+---
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} - 10xCards</title>
+  </head>
+  <body class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
+    <div class="w-full max-w-md">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">10xCards</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-2">Flashcards powered by AI</p>
+      </div>
+
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
+        <slot />
+      </div>
+
+      {
+        alternativeLink && (
+          <p class="text-center mt-6 text-sm text-gray-600 dark:text-gray-400">
+            {alternativeLink.text}{" "}
+            <a href={alternativeLink.href} class="text-blue-600 dark:text-blue-400 hover:underline font-medium">
+              {alternativeLink.label}
+            </a>
+          </p>
+        )
+      }
+    </div>
+  </body>
+</html>

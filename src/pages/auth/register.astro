@@ -1,0 +1,15 @@
+---
+import AuthLayout from "@/layouts/AuthLayout.astro";
+import { RegisterForm } from "@/components/auth/RegisterForm";
+---
+
+<AuthLayout
+  title="Sign Up"
+  alternativeLink={{
+    text: "Already have an account?",
+    href: "/auth/login",
+    label: "Sign in",
+  }}
+>
+  <RegisterForm client:load />
+</AuthLayout>
