@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { GetFlashcardParams, updateFlashcardBodySchema } from "@/lib/schemas/flashcard.schema";
+import { getFlashcardParamsSchema, flashcardUpsertSchema } from "../flashcards.schema";
 import { getFlashcardById, updateFlashcard } from "@/lib/services/flashcards.service";
 
 export const prerender = false;
@@ -13,7 +13,7 @@ export async function GET({ params, locals }: APIContext) {
   }
 
   // 2. Validate the flashcard ID from the URL
-  const idValidation = GetFlashcardParams.safeParse(params);
+  const idValidation = getFlashcardParamsSchema.safeParse(params);
   if (!idValidation.success) {
     return new Response(JSON.stringify({ error: "Invalid flashcard ID format" }), { status: 400 });
   }
@@ -45,7 +45,7 @@ export async function PATCH({ params, request, locals }: APIContext) {
   }
 
   // 1. Validate path parameter
-  const idValidation = GetFlashcardParams.safeParse(params);
+  const idValidation = getFlashcardParamsSchema.safeParse(params);
   if (!idValidation.success) {
     return new Response(JSON.stringify({ error: "Invalid flashcard ID format" }), { status: 400 });
   }
@@ -59,7 +59,7 @@ export async function PATCH({ params, request, locals }: APIContext) {
     return new Response(JSON.stringify({ error: "Invalid JSON body" }), { status: 400 });
   }
 
-  const bodyValidation = updateFlashcardBodySchema.safeParse(body);
+  const bodyValidation = flashcardUpsertSchema.safeParse(body);
   if (!bodyValidation.success) {
     return new Response(JSON.stringify({ error: "Invalid request body", details: bodyValidation.error.flatten() }), {
       status: 400,

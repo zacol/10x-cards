@@ -1,13 +1,12 @@
 import type { APIContext } from "astro";
 
-import { flashcardCreateSchema } from "./flashcards.schema";
+import { getFlashcardsQuerySchema, getFlashcardParamsSchema, flashcardUpsertSchema } from "./flashcards.schema";
 import {
   createFlashcard,
   deleteFlashcard,
   FlashcardNotFoundError,
   getFlashcards,
 } from "@/lib/services/flashcards.service";
-import { getFlashcardsQuerySchema, GetFlashcardParams } from "@/lib/schemas/flashcard.schema";
 
 export const prerender = false;
 
@@ -58,7 +57,7 @@ export async function POST(context: APIContext) {
     );
   }
 
-  const parsed = flashcardCreateSchema.safeParse(body);
+  const parsed = flashcardUpsertSchema.safeParse(body);
 
   // Guard: Validate input
   if (!parsed.success) {
@@ -220,7 +219,7 @@ export async function DELETE(context: APIContext): Promise<Response> {
   }
 
   // Validate path parameter
-  const parsedId = GetFlashcardParams.safeParse({ id });
+  const parsedId = getFlashcardParamsSchema.safeParse({ id });
   if (!parsedId.success) {
     return new Response(
       JSON.stringify({

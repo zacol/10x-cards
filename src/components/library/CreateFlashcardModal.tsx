@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { toast } from "sonner";
 import { Loader2, Plus } from "lucide-react";
 
@@ -19,14 +18,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import type { Flashcard, FlashcardCreateRequestDTO } from "@/types";
-
-// Zod schema for form validation
-const createFlashcardSchema = z.object({
-  front: z.string().min(1, "Front content cannot be empty.").max(200, "Front content cannot exceed 200 characters."),
-  back: z.string().min(1, "Back content cannot be empty.").max(400, "Back content cannot exceed 400 characters."),
-});
-
-type CreateFlashcardFormValues = z.infer<typeof createFlashcardSchema>;
+import { flashcardFormSchema, type FlashcardForm } from "@/lib/schemas/flashcard.schema";
 
 interface CreateFlashcardModalProps {
   onFlashcardCreated: (newFlashcard: Flashcard) => void;
@@ -45,8 +37,8 @@ export function CreateFlashcardModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Initialize react-hook-form with zod resolver
-  const form = useForm<CreateFlashcardFormValues>({
-    resolver: zodResolver(createFlashcardSchema),
+  const form = useForm<FlashcardForm>({
+    resolver: zodResolver(flashcardFormSchema),
     defaultValues: {
       front: "",
       back: "",
@@ -54,7 +46,7 @@ export function CreateFlashcardModal({
   });
 
   // Handle form submission
-  const onSubmit = async (values: CreateFlashcardFormValues) => {
+  const onSubmit = async (values: FlashcardForm) => {
     setIsSubmitting(true);
 
     try {
