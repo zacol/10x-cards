@@ -40,6 +40,12 @@ export interface PaginationMeta {
   has_more: boolean;
 }
 
+/** Generic paginated response wrapper combining data array with pagination metadata. */
+export interface PaginatedResponse<T> {
+  data: T[];
+  pagination: PaginationMeta;
+}
+
 /** Detailed statistics returned by `/api/stats`. */
 export interface UserStatisticsDTO {
   flashcards: {
@@ -131,4 +137,26 @@ export interface ErrorResponse<Details = unknown> {
     message: string;
     details?: Details;
   };
+}
+
+/**
+ * ---------------------------------------------------------------------------
+ * View Models (frontend state management)
+ * ---------------------------------------------------------------------------
+ */
+
+/** State object for library filters in the UI. */
+export interface LibraryFiltersViewModel {
+  sort: "created_at" | "updated_at" | "due_date";
+  order: "asc" | "desc";
+  createdByAi: "all" | "ai" | "manual"; // maps to true/false in API
+}
+
+/** Main state object managed by useLibraryState hook. */
+export interface LibraryStateViewModel {
+  flashcards: FlashcardDTO[];
+  pagination: PaginationMeta;
+  filters: LibraryFiltersViewModel;
+  status: "idle" | "loading" | "success" | "error";
+  error: string | null;
 }

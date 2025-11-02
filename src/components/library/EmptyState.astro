@@ -1,0 +1,37 @@
+---
+import { Button } from "@/components/ui/button";
+import { CreateFlashcardModal } from "./CreateFlashcardModal";
+import { BookOpen, Sparkles } from "lucide-react";
+---
+
+<div class="flex flex-col items-center justify-center py-20 px-4 text-center">
+  <div class="mb-6 rounded-full bg-muted p-6" aria-hidden="true">
+    <BookOpen className="h-16 w-16 text-muted-foreground" />
+  </div>
+
+  <h2 class="mb-2 text-2xl font-semibold tracking-tight">Your library is empty</h2>
+
+  <p class="mb-8 max-w-md text-muted-foreground">
+    Start creating flashcards to build your knowledge base. You can generate them with AI or add them manually.
+  </p>
+
+  <div class="flex flex-col gap-3 sm:flex-row">
+    <Button variant="default" size="lg" asChild>
+      <a href="/generator">
+        <Sparkles className="mr-2 h-4 w-4" />
+        Generate with AI
+      </a>
+    </Button>
+
+    <CreateFlashcardModal
+      client:load
+      onFlashcardCreated={() => {
+        // eslint-disable-next-line no-undef
+        window.location.href = "/library";
+      }}
+      triggerLabel="Add manually"
+      triggerVariant="outline"
+      triggerSize="lg"
+    />
+  </div>
+</div>

@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import Navbar from "@/components/Navbar.astro";
+import { ToasterWrapper } from "@/components/ui/toaster-wrapper";
 
 interface Props {
   title: string;
@@ -29,5 +30,6 @@ if (!user) {
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <slot />
     </main>
+    <ToasterWrapper client:load />
   </body>
 </html>
