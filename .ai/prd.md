@@ -11,11 +11,13 @@ Manualne tworzenie wysokiej jakości fiszek edukacyjnych jest procesem powolnym 
 ## 3. Wymagania funkcjonalne
 
 ### 3.1. System Użytkowników
+
 - Użytkownik musi mieć możliwość założenia konta za pomocą adresu e-mail i hasła.
 - Użytkownik musi mieć możliwość zalogowania się na swoje konto.
 - Sesja użytkownika musi być utrzymywana po zalogowaniu.
 
 ### 3.2. Zarządzanie Treścią (Fiszki)
+
 - Użytkownik musi mieć możliwość wygenerowania fiszek za pomocą AI poprzez wklejenie tekstu (limit 1000-10000 znaków).
 - Generator AI musi zawierać opcjonalne pole "kontekst/temat" w celu poprawy jakości generowanych fiszek.
 - Użytkownik musi mieć możliwość manualnego tworzenia fiszek (Awers: limit 200 znaków, Rewers: limit 400 znaków).
@@ -24,11 +26,13 @@ Manualne tworzenie wysokiej jakości fiszek edukacyjnych jest procesem powolnym 
 - Użytkownik musi mieć możliwość usunięcia pojedynczej fiszki.
 
 ### 3.3. Sesja Nauki
+
 - Interfejs sesji nauki musi wyświetlać najpierw awers fiszki, a po interakcji użytkownika (kliknięcie przycisku) - rewers.
 - Po odkryciu rewersu, użytkownik musi mieć możliwość oceny swojej znajomości fiszki za pomocą trzech opcji: "Nie wiem", "Wiem", "Bardzo łatwe".
 - Aplikacja musi integrować się z gotową biblioteką open-source implementującą algorytm powtórek.
 
 ### 3.4. Wymagania Techniczne
+
 - Aplikacja musi być zintegrowana z API OpenRouter.ai w celu generowania fiszek.
 - Musi być zdefiniowany domyślny model AI oraz model zapasowy (fallback).
 - Prompt wysyłany do AI musi zawierać instrukcję, aby zwracać dane w formacie JSON.
@@ -88,7 +92,7 @@ Następujące funkcje i elementy celowo NIE wchodzą w zakres MVP:
 - Tytuł: Przeglądanie i akceptacja wygenerowanych fiszek
 - Opis: Jako użytkownik, po wygenerowaniu propozycji fiszek przez AI, chcę je przejrzeć, edytować lub usunąć te niepoprawne, a następnie zapisać resztę.
 - Kryteria akceptacji:
-  - Każda wygenerowana fiszka na liście propozycji ma opcję "Edytuj" i "Usuń".
+  - Każda wygenerowana fiszka na liście propozycji ma opcję "Edit" i "Delete".
   - Edycja pozwala na modyfikację tekstu awersu i rewersu w miejscu (inline).
   - Usunięcie usuwa fiszkę z listy propozycji.
   - Przycisk "Zapisz fiszki" zapisuje wszystkie widoczne na liście propozycje.
@@ -101,7 +105,7 @@ Następujące funkcje i elementy celowo NIE wchodzą w zakres MVP:
 - Tytuł: Manualne tworzenie fiszki
 - Opis: Jako użytkownik, chcę mieć możliwość ręcznego dodania nowej fiszki poprzez wypełnienie formularza z awersem i rewersem.
 - Kryteria akceptacji:
-  - W widoku Biblioteki znajduje się przycisk "Dodaj fiszkę ręcznie".
+  - W widoku Biblioteki znajduje się przycisk "A".
   - Po kliknięciu, użytkownik widzi formularz, który zawiera pole na awers (limit 200 znaków) i rewers (limit 400 znaków).
   - Po wypełnieniu i zapisaniu, nowa fiszka jest widoczna na liście w Bibliotece.
   - Zapisana fiszka ma w bazie danych ustawioną flagę `created_by_ai` na `false`.
@@ -110,7 +114,7 @@ Następujące funkcje i elementy celowo NIE wchodzą w zakres MVP:
 - Tytuł: Edycja istniejącej fiszki
 - Opis: Jako użytkownik, chcę móc edytować treść awersu lub rewersu istniejącej fiszki z poziomu mojej Biblioteki.
 - Kryteria akceptacji:
-  - Każda fiszka na liście w Bibliotece ma przycisk "Edytuj".
+  - Każda fiszka na liście w Bibliotece ma przycisk "Edit".
   - Kliknięcie przycisku otwiera okno modalne z formularzem zawierającym aktualną treść awersu i rewersu.
   - Użytkownik może zmienić treść i zapisać zmiany.
   - Po zapisaniu, okno modalne zamyka się, a lista fiszek w Bibliotece jest odświeżona i pokazuje zaktualizowaną treść.
@@ -119,7 +123,7 @@ Następujące funkcje i elementy celowo NIE wchodzą w zakres MVP:
 - Tytuł: Usuwanie istniejącej fiszki
 - Opis: Jako użytkownik, chcę móc trwale usunąć fiszkę, której już nie potrzebuję, z poziomu mojej Biblioteki.
 - Kryteria akceptacji:
-  - Każda fiszka na liście w Bibliotece ma przycisk "Usuń".
+  - Każda fiszka na liście w Bibliotece ma przycisk "Delete".
   - Kliknięcie przycisku wymaga od użytkownika potwierdzenia operacji (np. przez okno dialogowe "Czy na pewno chcesz usunąć?").
   - Po potwierdzeniu, fiszka jest trwale usuwana z bazy danych, a lista w Bibliotece jest odświeżana.
 
@@ -129,9 +133,9 @@ Następujące funkcje i elementy celowo NIE wchodzą w zakres MVP:
 - Tytuł: Przebieg nauki fiszki
 - Opis: Jako użytkownik w trakcie sesji nauki, chcę zobaczyć awers fiszki, następnie kliknąć przycisk, aby zobaczyć rewers, a na końcu ocenić swoją znajomość odpowiedzi.
 - Kryteria akceptacji:
-  - Interfejs wyświetla awers fiszki oraz przycisk "Pokaż odpowiedź".
+  - Interfejs wyświetla awers fiszki oraz przycisk "Show answer".
   - Po kliknięciu przycisku, rewers fiszki jest odsłaniany.
-  - Pod rewersem pojawiają się trzy przyciski oceny: "Nie wiem", "Wiem", "Bardzo łatwe".
+  - Under the reverse side appears three assessment buttons: "Don't know", "I know", "Very easy".
   - Kliknięcie jednego z przycisków oceny zapisuje wynik, aktualizuje dane algorytmu dla tej fiszki i automatycznie wczytuje kolejną fiszkę do powtórki.
   - Po przejściu wszystkich zaplanowanych fiszek, użytkownik widzi ekran podsumowania sesji.
 
@@ -147,12 +151,13 @@ Następujące funkcje i elementy celowo NIE wchodzą w zakres MVP:
 - Tytuł: Obsługa pustych stanów
 - Opis: Jako nowy użytkownik, który nie ma jeszcze żadnych treści, chcę widzieć pomocne komunikaty i wskazówki, co robić dalej.
 - Kryteria akceptacji:
-  - Jeśli nie mam żadnych fiszek, widok Biblioteki pokazuje komunikat (np. "Nie masz jeszcze żadnych fiszek. Dodaj fiszki ręcznie lub wygeneruj je za pomocą AI.") z przyciskiem prowadzącym do generatora AI.
+  - If I have no flashcards, the Flashcard Library view displays a message (e.g. "You have no flashcards yet. Create them manually or generate them using AI.") with a button leading to the AI generator.
   - Jeśli nie mam żadnych talii, widok "Sesja Nauki" pokazuje komunikat zachęcający do stworzenia fiszek.
 
 ## 6. Metryki sukcesu
 
 ### 6.1. Akceptacja fiszek wygenerowanych przez AI
+
 - Cel: 75% fiszek wygenerowanych przez AI jest akceptowanych przez użytkownika.
 - Sposób pomiaru:
   - "Akceptacja" jest definiowana jako brak edycji lub usunięcia fiszki przez użytkownika podczas pierwszej sesji przeglądania po wygenerowaniu.
@@ -160,6 +165,7 @@ Następujące funkcje i elementy celowo NIE wchodzą w zakres MVP:
   - Wzór: `(Liczba fiszek zapisanych - Liczba fiszek edytowanych/usuniętych w przeglądzie) / Liczba fiszek zapisanych`.
 
 ### 6.2. Wykorzystanie generatora AI
+
 - Cel: Użytkownicy tworzą 75% wszystkich fiszek z wykorzystaniem generatora AI.
 - Sposób pomiaru:
   - W bazie danych każda fiszka będzie miała pole `created_by_ai: boolean`.

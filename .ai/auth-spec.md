@@ -5,12 +5,14 @@
 ### 1.1. Struktura stron i routingu
 
 #### Strony publiczne (dostępne bez autentykacji)
+
 - **`/auth/register`** - Formularz rejestracji (Astro + React)
 - **`/auth/login`** - Formularz logowania (Astro + React)
 - **`/auth/reset-password`** - Żądanie resetu hasła (Astro + React)
 - **`/auth/update-password`** - Aktualizacja hasła po resecie (Astro + React, wymaga tokena)
 
 #### Strony chronione (wymagają autentykacji)
+
 - **`/library`** - Główny widok po zalogowaniu (Biblioteka fiszek)
 - **`/generate`** - Generator fiszek AI
 - **`/study`** - Sesja nauki
@@ -18,9 +20,11 @@
 ### 1.2. Komponenty React (client-side)
 
 #### `RegisterForm.tsx` - Formularz rejestracji
+
 **Lokalizacja:** `src/components/auth/RegisterForm.tsx`
 
 **Odpowiedzialności:**
+
 - Walidacja frontendu (email format, min. 8 znaków hasła)
 - Wywołanie endpoint `POST /api/auth/register`
 - Zarządzanie stanem formularza i błędów
@@ -28,6 +32,7 @@
 - Przekierowanie do `/library` po sukcesie
 
 **Stan komponentu:**
+
 ```typescript
 {
   email: string;
@@ -39,21 +44,25 @@
 ```
 
 **Walidacja:**
+
 - Email: regex RFC 5322 simplified
 - Hasło: min. 8 znaków, wymagana 1 wielka litera, 1 cyfra
 - Potwierdzenie hasła: musi być identyczne
 - Komunikaty błędów wyświetlane inline pod polami
 
 #### `LoginForm.tsx` - Formularz logowania
+
 **Lokalizacja:** `src/components/auth/LoginForm.tsx`
 
 **Odpowiedzialności:**
+
 - Walidacja podstawowa (niepuste pola)
 - Wywołanie endpoint `POST /api/auth/login`
 - Obsługa błędu "Invalid credentials"
 - Przekierowanie do `/library` po sukcesie
 
 **Stan komponentu:**
+
 ```typescript
 {
   email: string;
@@ -64,52 +73,64 @@
 ```
 
 #### `ResetPasswordForm.tsx` - Żądanie resetu hasła
+
 **Lokalizacja:** `src/components/auth/ResetPasswordForm.tsx`
 
 **Odpowiedzialności:**
+
 - Walidacja email
 - Wywołanie endpoint `POST /api/auth/reset-password`
 - Wyświetlenie komunikatu sukcesu (sprawdź email)
 
 #### `UpdatePasswordForm.tsx` - Ustawienie nowego hasła
+
 **Lokalizacja:** `src/components/auth/UpdatePasswordForm.tsx`
 
 **Odpowiedzialności:**
+
 - Walidacja nowego hasła i potwierdzenia
 - Wywołanie endpoint `POST /api/auth/update-password`
 - Przekierowanie do `/auth/login` po sukcesie
 
 #### `LogoutButton.tsx` - Przycisk wylogowania
+
 **Lokalizacja:** `src/components/auth/LogoutButton.tsx`
 
 **Odpowiedzialności:**
+
 - Wywołanie endpoint `POST /api/auth/logout`
 - Przekierowanie do `/auth/login` po wylogowaniu
 
 ### 1.3. Komponenty Astro (static/SSR)
 
 #### `AuthLayout.astro` - Layout dla stron autentykacji
+
 **Lokalizacja:** `src/layouts/AuthLayout.astro`
 
 **Cechy:**
+
 - Wyśrodkowany kontener (max-width: 400px)
 - Logo aplikacji na górze
 - Link do alternatywnej akcji (np. "Masz już konto? Zaloguj się")
 - Minimalistyczny design z Tailwind + shadcn/ui
 
 #### `ProtectedLayout.astro` - Layout dla stron chronionych
+
 **Lokalizacja:** `src/layouts/ProtectedLayout.astro`
 
 **Odpowiedzialności:**
+
 - Sprawdzenie `Astro.locals.user` w server-side
 - Jeśli `null` → redirect do `/auth/login`
 - Nawigacja (navbar) z przyciskiem wylogowania
 - Wyświetlenie emaila użytkownika
 
 #### `Navbar.astro` - Pasek nawigacji
+
 **Lokalizacja:** `src/components/Navbar.astro`
 
 **Elementy:**
+
 - Logo/Nazwa aplikacji
 - Linki: Biblioteka, Generator, Sesja nauki
 - Email użytkownika + `<LogoutButton />` (React island)
@@ -119,12 +140,14 @@
 **Lokalizacja:** `src/middleware/index.ts`
 
 **Rozszerzenie istniejącego middleware:**
+
 ```typescript
 // Obecna implementacja już ekstraktuje user z Supabase
 // Należy dodać obsługę cookie-based sessions dla persistencji
 ```
 
 **Dodatkowa logika:**
+
 - Odświeżanie tokena gdy wygasł (refresh token flow)
 - Ustawienie nagłówka Authorization dla client-side (opcjonalne)
 - Brak zmian w obecnej logice - middleware już prawidłowo obsługuje user extraction
@@ -132,6 +155,7 @@
 ### 1.5. Scenariusze i przepływy UX
 
 #### Scenariusz 1: Rejestracja nowego użytkownika
+
 1. User wchodzi na `/auth/register`
 2. Wypełnia email, hasło, potwierdzenie hasła
 3. Kliknięcie "Zarejestruj się" → `POST /api/auth/register`
@@ -139,6 +163,7 @@
 5. Błąd → komunikat inline (np. "Email już istnieje")
 
 #### Scenariusz 2: Logowanie
+
 1. User wchodzi na `/auth/login`
 2. Wypełnia email i hasło
 3. Kliknięcie "Zaloguj się" → `POST /api/auth/login`
@@ -146,6 +171,7 @@
 5. Błąd → komunikat: "Nieprawidłowy email lub hasło"
 
 #### Scenariusz 3: Odzyskiwanie hasła
+
 1. User klika "Zapomniałeś hasła?" na `/auth/login`
 2. Redirect do `/auth/reset-password`
 3. Wpisuje email → `POST /api/auth/reset-password`
@@ -155,11 +181,13 @@
 7. Sukces → redirect do `/auth/login` z komunikatem "Hasło zostało zmienione"
 
 #### Scenariusz 4: Wylogowanie
+
 1. User klika przycisk "Wyloguj" w navbar
 2. `POST /api/auth/logout`
 3. Redirect do `/library` (landing page)
 
 #### Scenariusz 5: Dostęp do chronionej strony bez autentykacji
+
 1. User próbuje wejść na `/library` (nie jest zalogowany)
 2. `ProtectedLayout.astro` sprawdza `Astro.locals.user === null`
 3. Server-side redirect do `/auth/login?redirect=/library`
@@ -168,12 +196,14 @@
 ### 1.6. Walidacja i komunikaty błędów
 
 #### Client-side validation (React)
+
 - **Email:** "Please enter a valid email address"
 - **Password (registration):** "Password must be at least 8 characters, contain a capital letter and a number"
 - **Password confirmation:** "Passwords do not match"
 - **Empty field:** "This field is required"
 
 #### API error messages
+
 - **401 Unauthorized:** "Invalid email or password"
 - **409 Conflict (email exists):** "An account with this email address already exists"
 - **400 Bad Request:** "Invalid data. Please check the form."
@@ -185,9 +215,11 @@
 ### 2.1. Endpointy API
 
 #### `POST /api/auth/register`
+
 **Lokalizacja:** `src/pages/api/auth/register.ts`
 
 **Request Body:**
+
 ```typescript
 {
   email: string;
@@ -196,12 +228,14 @@
 ```
 
 **Odpowiedzialności:**
+
 - Walidacja danych (Zod schema)
 - Wywołanie `supabase.auth.signUp({ email, password })`
 - Auto-logowanie po rejestracji (ustawienie session cookie)
 - Return 201 + user data (bez hasła)
 
 **Response 201:**
+
 ```typescript
 {
   user: {
@@ -212,6 +246,7 @@
 ```
 
 **Errors:**
+
 - 400: Validation error
 - 409: Email already exists
 - 500: Internal error
@@ -219,9 +254,11 @@
 ---
 
 #### `POST /api/auth/login`
+
 **Lokalizacja:** `src/pages/api/auth/login.ts`
 
 **Request Body:**
+
 ```typescript
 {
   email: string;
@@ -230,12 +267,14 @@
 ```
 
 **Odpowiedzialności:**
+
 - Walidacja danych
 - Wywołanie `supabase.auth.signInWithPassword({ email, password })`
 - Ustawienie session cookie
 - Return 200 + user data
 
 **Response 200:**
+
 ```typescript
 {
   user: {
@@ -246,6 +285,7 @@
 ```
 
 **Errors:**
+
 - 400: Validation error
 - 401: Invalid credentials
 - 500: Internal error
@@ -253,9 +293,11 @@
 ---
 
 #### `POST /api/auth/logout`
+
 **Lokalizacja:** `src/pages/api/auth/logout.ts`
 
 **Odpowiedzialności:**
+
 - Wywołanie `supabase.auth.signOut()`
 - Wyczyszczenie session cookie
 - Return 204 No Content
@@ -265,9 +307,11 @@
 ---
 
 #### `POST /api/auth/reset-password`
+
 **Lokalizacja:** `src/pages/api/auth/reset-password.ts`
 
 **Request Body:**
+
 ```typescript
 {
   email: string;
@@ -275,23 +319,27 @@
 ```
 
 **Odpowiedzialności:**
+
 - Walidacja email
 - Wywołanie `supabase.auth.resetPasswordForEmail(email, { redirectTo: 'https://domain.com/auth/update-password' })`
 - Return 200 (zawsze, nawet jeśli email nie istnieje - security best practice)
 
 **Response 200:**
+
 ```typescript
 {
-  message: "Jeśli konto istnieje, link do resetu hasła został wysłany na email"
+  message: "Jeśli konto istnieje, link do resetu hasła został wysłany na email";
 }
 ```
 
 ---
 
 #### `POST /api/auth/update-password`
+
 **Lokalizacja:** `src/pages/api/auth/update-password.ts`
 
 **Request Body:**
+
 ```typescript
 {
   password: string;
@@ -299,18 +347,21 @@
 ```
 
 **Odpowiedzialności:**
+
 - Weryfikacja tokena z URL (automatycznie przez Supabase)
 - Wywołanie `supabase.auth.updateUser({ password })`
 - Return 200
 
 **Response 200:**
+
 ```typescript
 {
-  message: "Hasło zostało zaktualizowane"
+  message: "Hasło zostało zaktualizowane";
 }
 ```
 
 **Errors:**
+
 - 400: Invalid token / expired
 - 401: Unauthorized
 - 500: Internal error
@@ -354,38 +405,30 @@ export const updatePasswordSchema = z.object({
 **Lokalizacja:** `src/lib/services/auth.service.ts`
 
 **Funkcje:**
+
 ```typescript
 // Register user
-async function registerUser(
-  email: string,
-  password: string,
-  supabase: SupabaseClient
-): Promise<User>
+async function registerUser(email: string, password: string, supabase: SupabaseClient): Promise<User>;
 
 // Login user
 async function loginUser(
   email: string,
   password: string,
   supabase: SupabaseClient
-): Promise<{ user: User; session: Session }>
+): Promise<{ user: User; session: Session }>;
 
 // Logout user
-async function logoutUser(supabase: SupabaseClient): Promise<void>
+async function logoutUser(supabase: SupabaseClient): Promise<void>;
 
 // Request password reset
-async function requestPasswordReset(
-  email: string,
-  supabase: SupabaseClient
-): Promise<void>
+async function requestPasswordReset(email: string, supabase: SupabaseClient): Promise<void>;
 
 // Update password
-async function updatePassword(
-  newPassword: string,
-  supabase: SupabaseClient
-): Promise<void>
+async function updatePassword(newPassword: string, supabase: SupabaseClient): Promise<void>;
 ```
 
 **Odpowiedzialności serwisu:**
+
 - Enkapsulacja logiki Supabase Auth
 - Obsługa błędów Supabase i mapowanie na ErrorResponse
 - Logika biznesowa (jeśli potrzebna w przyszłości)
@@ -393,6 +436,7 @@ async function updatePassword(
 ### 2.4. Obsługa wyjątków
 
 **Wzorzec obsługi błędów w endpointach:**
+
 1. Guard clause dla autentykacji (jeśli wymagana)
 2. Try-catch dla parsowania JSON
 3. Zod safeParse dla walidacji
@@ -400,6 +444,7 @@ async function updatePassword(
 5. Zwrot ErrorResponse z odpowiednim kodem HTTP
 
 **Standardowe ErrorResponse:**
+
 ```typescript
 {
   error: {
@@ -411,6 +456,7 @@ async function updatePassword(
 ```
 
 **Kody błędów dla autentykacji:**
+
 - `VALIDATION_ERROR` (400)
 - `AUTHENTICATION_ERROR` (401)
 - `CONFLICT` (409) - email already exists
@@ -420,16 +466,19 @@ async function updatePassword(
 ### 2.5. Aktualizacja renderowania stron
 
 **Obecna konfiguracja (astro.config.mjs):**
+
 ```javascript
-output: "server"  // SSR dla wszystkich stron
+output: "server"; // SSR dla wszystkich stron
 ```
 
 **Strategia renderowania:**
+
 - **Strony autentykacji (`/auth/*`):** SSR - aby sprawdzić czy user jest już zalogowany i ewentualnie przekierować
 - **Strony chronione:** SSR z guard w layout (`ProtectedLayout.astro`)
 - **Landing page (`/`):** SSR lub static (do decyzji - zależy czy będą personalizowane treści)
 
 **Nowe pliki stron:**
+
 ```
 src/pages/
 ├── auth/
@@ -444,6 +493,7 @@ src/pages/
 ```
 
 **Wykorzystanie `export const prerender`:**
+
 - Dla endpointów API: `export const prerender = false` (już obecne)
 - Dla stron: domyślnie SSR (zgodnie z `output: "server"`)
 
@@ -452,12 +502,14 @@ src/pages/
 ### 3.1. Konfiguracja Supabase Auth
 
 **Wymagane zmienne środowiskowe (.env):**
+
 ```bash
 SUPABASE_URL=https://xxx.supabase.co
 SUPABASE_KEY=eyJhbGc...  # anon/public key
 ```
 
 **Konfiguracja Supabase Dashboard:**
+
 1. **Email Auth:** Włączony (domyślnie)
 2. **Email Templates:** Dostosowanie szablonów dla reset hasła
 3. **Redirect URLs:** Whitelist `https://yourdomain.com/auth/update-password`
@@ -466,6 +518,7 @@ SUPABASE_KEY=eyJhbGc...  # anon/public key
 ### 3.2. Flow autentykacji w Astro
 
 #### Rejestracja
+
 ```typescript
 // src/pages/api/auth/register.ts
 const { data, error } = await supabase.auth.signUp({
@@ -480,6 +533,7 @@ return new Response(JSON.stringify({ user: data.user }), { status: 201 });
 ```
 
 #### Logowanie
+
 ```typescript
 // src/pages/api/auth/login.ts
 const { data, error } = await supabase.auth.signInWithPassword({
@@ -494,6 +548,7 @@ return new Response(JSON.stringify({ user: data.user }), { status: 200 });
 ```
 
 #### Wylogowanie
+
 ```typescript
 // src/pages/api/auth/logout.ts
 const { error } = await supabase.auth.signOut();
@@ -506,26 +561,32 @@ return new Response(null, { status: 204 });
 ### 3.3. Zarządzanie sesją
 
 **Mechanizm:**
+
 - Supabase automatycznie zarządza session przez cookies
 - Access token (JWT) przechowywany w cookie (httpOnly, secure)
 - Refresh token również w cookie
 - Middleware (`src/middleware/index.ts`) ekstraktuje user z sesji przy każdym request
 
 **Lifetime sesji:**
+
 - Access token: 1 godzina (domyślnie)
 - Refresh token: 30 dni
 - Auto-refresh przez Supabase client
 
 **Weryfikacja autentykacji w middleware:**
+
 ```typescript
 // src/middleware/index.ts (już zaimplementowane)
-const { data: { user } } = await supabase.auth.getUser();
-context.locals.user = user;  // null jeśli niezalogowany
+const {
+  data: { user },
+} = await supabase.auth.getUser();
+context.locals.user = user; // null jeśli niezalogowany
 ```
 
 ### 3.4. Server-side protection
 
 **ProtectedLayout.astro:**
+
 ```typescript
 ---
 const user = Astro.locals.user;
@@ -545,15 +606,15 @@ if (!user) {
 ```
 
 **Wzorzec dla chronionych endpointów API (już stosowany):**
+
 ```typescript
 export async function POST(context: APIContext) {
   const { user } = context.locals;
 
   if (!user) {
-    return new Response(
-      JSON.stringify({ error: { code: "AUTHENTICATION_ERROR", message: "Unauthenticated" } }),
-      { status: 401 }
-    );
+    return new Response(JSON.stringify({ error: { code: "AUTHENTICATION_ERROR", message: "Unauthenticated" } }), {
+      status: 401,
+    });
   }
 
   // ... reszta logiki
@@ -563,16 +624,17 @@ export async function POST(context: APIContext) {
 ### 3.5. Client-side API calls z autentykacją
 
 **Fetch z automatyczną autentykacją:**
+
 ```typescript
 // Supabase automatycznie dołącza Authorization header
 // jeśli session istnieje w cookies
 
 // src/components/auth/LoginForm.tsx
-const response = await fetch('/api/auth/login', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+const response = await fetch("/api/auth/login", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ email, password }),
-  credentials: 'same-origin',  // Ważne dla cookies
+  credentials: "same-origin", // Ważne dla cookies
 });
 ```
 
@@ -581,6 +643,7 @@ const response = await fetch('/api/auth/login', {
 ### 3.6. Email templates (Supabase)
 
 **Reset hasła:**
+
 - Template w Supabase Dashboard → Authentication → Email Templates
 - Link zawiera token: `{{ .ConfirmationURL }}`
 - Redirect URL: `https://yourdomain.com/auth/update-password`
@@ -588,6 +651,7 @@ const response = await fetch('/api/auth/login', {
 ### 3.7. Row Level Security (RLS)
 
 **Tabela `flashcards`:**
+
 ```sql
 -- Już zaimplementowane RLS policies (zgodnie z migracjami)
 -- User może tylko CRUD własnych fiszek
@@ -604,6 +668,7 @@ CREATE POLICY "Users can create own flashcards"
 ```
 
 **Tabela `generations`:**
+
 ```sql
 -- Analogiczne policies dla generations
 ```
@@ -613,6 +678,7 @@ CREATE POLICY "Users can create own flashcards"
 ### 4.1. Rozszerzenie types.ts
 
 **Dodanie typów dla autentykacji (już częściowo obecne):**
+
 ```typescript
 // src/types.ts
 export interface AuthCommand {
@@ -639,13 +705,14 @@ export interface UpdatePasswordCommand {
 ### 4.2. Rozszerzenie env.d.ts
 
 **Brak zmian - już prawidłowo zdefiniowane:**
+
 ```typescript
 // src/env.d.ts
 declare global {
   namespace App {
     interface Locals {
       supabase: SupabaseClient;
-      user: User | null;  // ✓ Już zaimplementowane
+      user: User | null; // ✓ Już zaimplementowane
     }
   }
 }
@@ -654,6 +721,7 @@ declare global {
 ## 5. CHECKLIST IMPLEMENTACYJNY
 
 ### Frontend
+
 - [ ] Utworzyć `AuthLayout.astro`
 - [ ] Utworzyć `ProtectedLayout.astro` z guard
 - [ ] Utworzyć `RegisterForm.tsx` z walidacją
@@ -667,6 +735,7 @@ declare global {
 - [ ] Utworzyć `/library.astro`, `/generate.astro`, `/study.astro` z `ProtectedLayout`
 
 ### Backend
+
 - [ ] Utworzyć `auth.schema.ts` z walidacją Zod
 - [ ] Utworzyć `auth.service.ts` z funkcjami Supabase Auth
 - [ ] Utworzyć endpoint `POST /api/auth/register`
@@ -678,12 +747,14 @@ declare global {
 - [ ] Dodać obsługę redirect URL w loginie
 
 ### Supabase
+
 - [ ] Skonfigurować Email Auth w Supabase Dashboard
 - [ ] Dostosować email template dla reset hasła
 - [ ] Dodać Redirect URLs do whitelist
 - [ ] Zweryfikować RLS policies dla `flashcards` i `generations`
 
 ### Testy
+
 - [ ] Przetestować flow rejestracji
 - [ ] Przetestować flow logowania
 - [ ] Przetestować flow wylogowania
@@ -695,18 +766,21 @@ declare global {
 ## 6. ZGODNOŚĆ Z ISTNIEJĄCĄ APLIKACJĄ
 
 ### 6.1. Brak breaking changes
+
 - Obecny endpoint `POST /api/flashcards` już wymaga autentykacji ✓
 - Middleware już ekstraktuje user ✓
 - RLS już skonfigurowane w bazie danych ✓
 - TypeScript types już definiują `AuthCommand` ✓
 
 ### 6.2. Rozszerzenia
+
 - Dodanie nowych stron autentykacji (nie wpływa na istniejące)
 - Dodanie nowych endpointów API (nie wpływa na istniejące)
 - Dodanie layoutów (nie wpływa na istniejące komponenty)
 - Wykorzystanie istniejącego middleware (bez zmian)
 
 ### 6.3. Integracja z istniejącymi funkcjami
+
 - Generator AI: Już chroniony przez middleware (wymaga `user` w `context.locals`)
 - Biblioteka fiszek: Będzie używać `ProtectedLayout`
 - Sesja nauki: Będzie używać `ProtectedLayout`
@@ -715,6 +789,7 @@ declare global {
 ## 7. BEZPIECZEŃSTWO
 
 ### 7.1. Best practices
+
 - **Hasła:** Hashowane przez Supabase (bcrypt)
 - **JWT:** HttpOnly cookies, Secure flag w produkcji
 - **CSRF:** Supabase client automatycznie zabezpiecza
