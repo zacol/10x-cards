@@ -1,6 +1,11 @@
 import type { APIContext } from "astro";
 import { getFlashcardParamsSchema, flashcardUpsertSchema } from "../flashcards.schema";
-import { getFlashcardById, updateFlashcard } from "@/lib/services/flashcards.service";
+import {
+  getFlashcardById,
+  updateFlashcard,
+  deleteFlashcard,
+  FlashcardNotFoundError,
+} from "@/lib/services/flashcards.service";
 
 export const prerender = false;
 
@@ -32,6 +37,39 @@ export async function GET({ params, locals }: APIContext) {
   } catch (error) {
     // Log the error for debugging purposes
     console.error(`Error fetching flashcard ${flashcardId}:`, error);
+    return new Response(JSON.stringify({ error: "An internal server error occurred" }), { status: 500 });
+  }
+}
+
+export async function DELETE({ params, locals }: APIContext) {
+  const { supabase, user } = locals;
+
+  // 1. Check if user is authenticated
+  if (!user) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+  }
+
+  // 2. Validate the flashcard ID from the URL
+  const idValidation = getFlashcardParamsSchema.safeParse(params);
+  if (!idValidation.success) {
+    return new Response(JSON.stringify({ error: "Invalid flashcard ID format" }), { status: 400 });
+  }
+  const flashcardId = idValidation.data.id;
+
+  try {
+    // 3. Attempt to delete the flashcard
+    await deleteFlashcard(flashcardId, user.id, supabase);
+
+    // 4. On success, return 204 No Content
+    return new Response(null, { status: 204 });
+  } catch (error) {
+    // 5. Handle specific errors
+    if (error instanceof FlashcardNotFoundError) {
+      return new Response(JSON.stringify({ error: error.message }), { status: 404 });
+    }
+
+    // Log other errors for debugging
+    console.error(`Error deleting flashcard ${flashcardId}:`, error);
     return new Response(JSON.stringify({ error: "An internal server error occurred" }), { status: 500 });
   }
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,9 +24,10 @@ import { MoreVertical, Pencil, Trash2, Sparkles, Calendar } from "lucide-react";
 interface FlashcardCardProps {
   flashcard: FlashcardDTO;
   onDelete: (id: string) => void;
+  onEdit: (flashcard: FlashcardDTO) => void;
 }
 
-export function FlashcardCard({ flashcard, onDelete }: FlashcardCardProps) {
+export function FlashcardCard({ flashcard, onDelete, onEdit }: FlashcardCardProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const handleDelete = () => {
@@ -61,7 +62,7 @@ export function FlashcardCard({ flashcard, onDelete }: FlashcardCardProps) {
   return (
     <>
       <Card className="group relative flex flex-col transition-shadow hover:shadow-md">
-        <CardHeader className="flex-row items-start justify-between space-y-0 pb-3">
+        <CardContent className="flex-1 space-y-4">
           <div className="flex space-x-2 items-center">
             {flashcard.created_by_ai && (
               <Badge variant="secondary" className="gap-1">
@@ -81,21 +82,14 @@ export function FlashcardCard({ flashcard, onDelete }: FlashcardCardProps) {
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100"
-                  aria-label="Open menu"
-                >
+                <Button variant="outline" size="icon" className="h-8 w-8" aria-label="Open menu">
                   <MoreVertical className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem asChild>
-                  <a href={`/flashcards/${flashcard.id}/edit`} className="flex cursor-pointer items-center">
-                    <Pencil className="mr-2 h-4 w-4" />
-                    Edit
-                  </a>
+                <DropdownMenuItem onSelect={() => onEdit(flashcard)} className="flex cursor-pointer items-center">
+                  <Pencil className="mr-2 h-4 w-4" />
+                  Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="text-destructive focus:text-destructive"
@@ -107,9 +101,6 @@ export function FlashcardCard({ flashcard, onDelete }: FlashcardCardProps) {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        </CardHeader>
-
-        <CardContent className="flex-1 space-y-4">
           <div>
             <h3 className="mb-1 text-sm font-medium text-muted-foreground">Front</h3>
             <p className="line-clamp-3 text-sm">{flashcard.front}</p>

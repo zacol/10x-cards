@@ -1,12 +1,7 @@
 import type { APIContext } from "astro";
 
-import { getFlashcardsQuerySchema, getFlashcardParamsSchema, flashcardUpsertSchema } from "./flashcards.schema";
-import {
-  createFlashcard,
-  deleteFlashcard,
-  FlashcardNotFoundError,
-  getFlashcards,
-} from "@/lib/services/flashcards.service";
+import { getFlashcardsQuerySchema, flashcardUpsertSchema } from "./flashcards.schema";
+import { createFlashcard, getFlashcards } from "@/lib/services/flashcards.service";
 
 export const prerender = false;
 
@@ -178,92 +173,6 @@ export async function GET(context: APIContext) {
         error: {
           code: "INTERNAL_ERROR",
           message: "Unable to retrieve flashcards",
-        },
-      }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-  }
-}
-
-/**
- * DELETE /api/flashcards/{id}
- * Deletes a specific flashcard for the authenticated user.
- *
- * @returns 204 No Content on successful deletion
- * @returns 400 Bad Request if the ID is invalid
- * @returns 401 Unauthorized if the user is not authenticated
- * @returns 404 Not Found if the flashcard does not exist or does not belong to the user
- * @returns 500 Internal Server Error on unexpected failure
- */
-export async function DELETE(context: APIContext): Promise<Response> {
-  const { supabase, user } = context.locals;
-  const { id } = context.params;
-
-  // Guard: Check authentication
-  if (!user) {
-    return new Response(
-      JSON.stringify({
-        error: {
-          code: "AUTHENTICATION_ERROR",
-          message: "Unauthenticated",
-        },
-      }),
-      {
-        status: 401,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-  }
-
-  // Validate path parameter
-  const parsedId = getFlashcardParamsSchema.safeParse({ id });
-  if (!parsedId.success) {
-    return new Response(
-      JSON.stringify({
-        error: {
-          code: "VALIDATION_ERROR",
-          message: "Invalid flashcard ID format",
-          details: parsedId.error.format(),
-        },
-      }),
-      {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-  }
-
-  // Happy path: Attempt to delete the flashcard
-  try {
-    await deleteFlashcard(parsedId.data.id, user.id, supabase);
-    return new Response(null, { status: 204 });
-  } catch (error) {
-    // Handle specific not-found error
-    if (error instanceof FlashcardNotFoundError) {
-      return new Response(
-        JSON.stringify({
-          error: {
-            code: "NOT_FOUND",
-            message: "Flashcard not found",
-          },
-        }),
-        {
-          status: 404,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-    }
-
-    // Handle generic internal errors
-    console.error(`[DELETE /api/flashcards/{id}] Failed to delete flashcard:`, error);
-    return new Response(
-      JSON.stringify({
-        error: {
-          code: "INTERNAL_ERROR",
-          message: "An unexpected error occurred",
         },
       }),
       {

@@ -234,11 +234,20 @@ export function useLibraryState({ initialData, initialFilters }: UseLibraryState
     }));
   }, []);
 
+  // Update a flashcard in the list (optimistic update)
+  const updateFlashcard = useCallback((updatedFlashcard: FlashcardDTO) => {
+    setState((prev) => ({
+      ...prev,
+      flashcards: prev.flashcards.map((f) => (f.id === updatedFlashcard.id ? updatedFlashcard : f)),
+    }));
+  }, []);
+
   return {
     state,
     setFilters,
     setPage,
     deleteFlashcard,
     addFlashcard,
+    updateFlashcard,
   };
 }

@@ -28,7 +28,7 @@ Manualne tworzenie wysokiej jakości fiszek edukacyjnych jest procesem powolnym 
 ### 3.3. Sesja Nauki
 
 - Interfejs sesji nauki musi wyświetlać najpierw awers fiszki, a po interakcji użytkownika (kliknięcie przycisku) - rewers.
-- Po odkryciu rewersu, użytkownik musi mieć możliwość oceny swojej znajomości fiszki za pomocą trzech opcji: "Nie wiem", "Wiem", "Bardzo łatwe".
+- Po odkryciu rewersu, użytkownik musi mieć możliwość oceny swojej znajomości fiszki za pomocą trzech opcji: "Don't know", "I know", "Very easy".
 - Aplikacja musi integrować się z gotową biblioteką open-source implementującą algorytm powtórek.
 
 ### 3.4. Wymagania Techniczne
@@ -135,7 +135,7 @@ Następujące funkcje i elementy celowo NIE wchodzą w zakres MVP:
 - Kryteria akceptacji:
   - Interfejs wyświetla awers fiszki oraz przycisk "Show answer".
   - Po kliknięciu przycisku, rewers fiszki jest odsłaniany.
-  - Under the reverse side appears three assessment buttons: "Don't know", "I know", "Very easy".
+  - Pod rewersem pojawiają się trzy przyciski oceny: "Don't know", "I know", "Very easy".
   - Kliknięcie jednego z przycisków oceny zapisuje wynik, aktualizuje dane algorytmu dla tej fiszki i automatycznie wczytuje kolejną fiszkę do powtórki.
   - Po przejściu wszystkich zaplanowanych fiszek, użytkownik widzi ekran podsumowania sesji.
 
