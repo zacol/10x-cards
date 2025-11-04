@@ -124,7 +124,7 @@ Aplikacja 10xCards wykorzystuje architekturę opartą na Astro 5 z React 19 isla
 
 - StudySession (React) - główna logika sesji
 - FlashcardReview (React) - wyświetlanie front/back
-- RatingButtons (React) - 3 przyciski (Nie wiem, Wiem, Bardzo łatwe)
+- RatingButtons (React) - 3 przyciski (Don't know, I know, Very easy)
 - ProgressBar (React) - "15/25" + linear progress indicator
 - SessionSummary (React) - ekran końcowy z podsumowaniem
 - ExitConfirmModal (React) - ostrzeżenie o utracie postępu
@@ -132,10 +132,10 @@ Aplikacja 10xCards wykorzystuje architekturę opartą na Astro 5 z React 19 isla
 **Przepływ:**
 
 1. Pre-fetch: GET /api/flashcards/due?limit=100
-2. State 1: Awers + "Pokaż odpowiedź" button + progress bar u góry
+2. State 1: Awers + "Show answer" button + progress bar u góry
 3. State 2: Awers + Rewers + 3 rating buttons
 4. Rating → Optimistic update, instant następna karta
-5. Exit button → modal "Czy na pewno? Postęp zostanie utracony"
+5. Exit button → modal "Are you sure? Progress will be lost"
 6. Complete → SessionSummary + redirect /library
 
 **UX/Dostępność/Bezpieczeństwo:**
@@ -144,7 +144,7 @@ Aplikacja 10xCards wykorzystuje architekturę opartą na Astro 5 z React 19 isla
 - Brak metadanych SM-2 (tylko front/back)
 - Keyboard shortcuts: Space (show/next), 1/2/3 (ratings) - opcjonalne w przyszłości
 - aria-live="polite" dla zmiany karty
-- Auto-focus na "Pokaż odpowiedź"
+- Auto-focus na "Show answer"
 - Brak persistence - refresh = utrata postępu
 
 ### 2.6 /stats - Statystyki użytkownika
