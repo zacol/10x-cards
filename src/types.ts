@@ -187,3 +187,22 @@ export interface LibraryStateViewModel {
   status: "idle" | "loading" | "success" | "error";
   error: string | null;
 }
+
+/** Statistics for a study session, used in the summary view. */
+export interface SessionStats {
+  total: number; // Total number of flashcards in the session
+  reviewed: number; // Number of reviewed flashcards
+  again: number; // Number of "Don't know" ratings (rating: "again")
+  good: number; // Number of "I know" ratings (rating: "good")
+  easy: number; // Number of "Very easy" ratings (rating: "easy")
+}
+
+/** State of the study session, managed by the useStudySession hook. */
+export interface StudySessionState {
+  flashcards: FlashcardDueDto[]; // All flashcards loaded for the session
+  currentIndex: number; // Index of the currently displayed flashcard (0-based)
+  isAnswerVisible: boolean; // Whether the back of the card is visible
+  sessionStats: SessionStats; // Statistics for the current session
+  status: "loading" | "active" | "completed" | "error"; // Status of the session
+  error: string | null; // Error message, if any
+}
