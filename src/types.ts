@@ -74,6 +74,33 @@ export interface AcceptGenerationResponse {
   flashcard_ids: string[];
 }
 
+/** Flashcard data returned when querying due flashcards for review. */
+export interface FlashcardDueDto {
+  id: string;
+  front: string;
+  back: string;
+  repetition: number;
+  interval: number;
+  efactor: number;
+  due_date: string;
+}
+
+/** Response containing a list of due flashcards and the total count. */
+export interface GetDueFlashcardsResponse {
+  data: FlashcardDueDto[];
+  total_due: number;
+}
+
+/** Response returned after reviewing a flashcard (applying SM-2 algorithm). */
+export interface FlashcardReviewResponseDTO {
+  id: string;
+  repetition: number;
+  interval: number;
+  efactor: number;
+  due_date: string;
+  updated_at: string;
+}
+
 /**
  * ---------------------------------------------------------------------------
  * Command Models (request bodies)

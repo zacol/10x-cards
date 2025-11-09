@@ -41,3 +41,13 @@ export const flashcardUpsertSchema = z.object({
 });
 
 export type FlashcardUpsert = z.infer<typeof flashcardUpsertSchema>;
+
+/**
+ * Schema for validating query parameters in GET /api/flashcards/due endpoint.
+ * Supports limiting the number of due flashcards returned.
+ */
+export const getDueFlashcardsQuerySchema = z.object({
+  limit: z.coerce.number().int().min(1, "Limit must be at least 1").max(100, "Limit cannot exceed 100").default(20),
+});
+
+export type GetDueFlashcardsQuery = z.infer<typeof getDueFlashcardsQuerySchema>;
