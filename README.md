@@ -8,6 +8,7 @@
 - [Tech Stack](#tech-stack)
 - [Getting Started Locally](#getting-started-locally)
 - [Available Scripts](#available-scripts)
+- [Testing](#testing)
 - [Project Scope](#project-scope)
 - [Project Status](#project-status)
 - [License](#license)
@@ -21,6 +22,7 @@ Manually creating high-quality educational flashcards is a slow and laborious pr
 - **Frontend**: Astro 5, React 19, TypeScript 5, Tailwind CSS 4, Shadcn/ui
 - **Backend & Database**: Supabase, PostgreSQL
 - **AI Integration**: OpenRouter.ai
+- **Testing**: Vitest, React Testing Library, Playwright
 - **Infrastructure & CI/CD**: GitHub, GitHub Actions, DigitalOcean App Platform
 
 ## Getting Started Locally
@@ -75,6 +77,16 @@ In the project directory, you can run the following scripts:
 - `npm run lint`: Lints the project files.
 - `npm run lint:fix`: Lints and automatically fixes issues.
 - `npm run format`: Formats the code using Prettier.
+
+## Testing
+
+The project includes both unit and end-to-end tests to ensure code quality and application stability.
+
+- `npm test`: Runs the complete test suite, including both unit and end-to-end tests.
+- `npm run test:unit`: Runs unit tests using Vitest. This is ideal for quick checks during development.
+- `npm run test:unit:ui`: Launches the Vitest UI, allowing you to interactively browse and run unit tests.
+- `npm run test:e2e`: Runs end-to-end tests using Playwright. These tests simulate user interactions in a real browser.
+- `npm run test:e2e:ui`: Opens the Playwright UI for debugging end-to-end tests step-by-step.
 
 ## Project Scope
 

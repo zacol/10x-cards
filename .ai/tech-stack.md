@@ -22,3 +22,9 @@
 - **GitHub**: Służy jako centralne repozytorium kodu źródłowego projektu.
 - **GitHub Actions**: Automatyzuje procesy budowania, testowania i wdrażania aplikacji (CI/CD).
 - **DigitalOcean App Platform**: Służy jako platforma hostingowa do wdrażania i skalowania aplikacji.
+
+## Testowanie
+
+- **Vitest**: Nowoczesny i szybki framework do testów jednostkowych i integracyjnych.
+- **React Testing Library**: Biblioteka do testowania komponentów React w sposób, który symuluje interakcje użytkownika.
+- **Playwright**: Narzędzie do testów End-to-End (E2E) i regresji wizualnej, które pozwala na automatyzację testów w różnych przeglądarkach.
