@@ -1,6 +1,6 @@
 import type { APIContext } from "astro";
 
-import { getDueFlashcardsQuerySchema } from "../flashcards.schema";
+import { getDueFlashcardsQuerySchema } from "./flashcards.schema";
 import { getDueFlashcards } from "@/lib/services/flashcards.service";
 
 export const prerender = false;

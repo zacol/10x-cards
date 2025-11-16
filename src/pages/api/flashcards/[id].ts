@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { getFlashcardParamsSchema, flashcardUpsertSchema } from "../flashcards.schema";
+import { getFlashcardParamsSchema, flashcardUpsertSchema } from "./flashcards.schema";
 import {
   getFlashcardById,
   updateFlashcard,

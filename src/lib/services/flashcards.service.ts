@@ -9,7 +9,7 @@ import type {
   FlashcardReviewResponseDTO,
   ReviewRating,
 } from "@/types";
-import type { GetFlashcardsQuery, FlashcardUpsert } from "@/pages/api/flashcards.schema";
+import type { GetFlashcardsQuery, FlashcardUpsert } from "@/pages/api/flashcards/flashcards.schema";
 
 /**
  * Creates a new flashcard for the authenticated user.
