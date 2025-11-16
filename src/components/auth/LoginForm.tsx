@@ -46,6 +46,9 @@ export function LoginForm() {
         throw new Error(data.error?.message || "Invalid email or password");
       }
 
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       // Redirect to library or custom redirect URL
       const redirectUrl = new URLSearchParams(window.location.search).get("redirect") || "/library";
       window.location.href = redirectUrl;
@@ -57,7 +60,7 @@ export function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4" data-testid="login-form">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Sign in to your account</h2>
 
       {error && (

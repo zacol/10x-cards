@@ -49,6 +49,8 @@ export function ResetPasswordForm() {
       //
       // setSuccess(true);
 
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 100));
       console.log("Password reset request:", { email });
       setSuccess(true);
     } catch (err) {

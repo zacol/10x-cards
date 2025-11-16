@@ -49,6 +49,8 @@ export function UpdatePasswordForm() {
       //
       // window.location.href = '/auth/login?message=Password updated successfully';
 
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 100));
       console.log("Password update attempt");
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred while updating password");

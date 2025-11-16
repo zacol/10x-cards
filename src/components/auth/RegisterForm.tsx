@@ -48,6 +48,9 @@ export function RegisterForm() {
         throw new Error(data.error?.message || "Registration failed");
       }
 
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       // Redirect to library after successful registration
       window.location.href = "/library";
     } catch (err) {
